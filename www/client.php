@@ -11,8 +11,8 @@
     $id = rand(0,100);
     $connector->create('127.0.0.1', 8001)->then(function (React\Stream\Stream $stream) use ($id, $loop) {
 
-        $loop->addPeriodicTimer(0.5, function (React\EventLoop\Timer\Timer $timer) use ($id, $loop, $stream) {
-            $stream->write($id.'|'.time() . PHP_EOL);
+        $loop->addPeriodicTimer(1, function (React\EventLoop\Timer\Timer $timer) use ($id, $loop, $stream) {
+            $stream->write($id.'|'.time().'|'.time().'|'.time().'|'.time() . PHP_EOL);
 //            if ($i >= 15) {
 //                $loop->cancelTimer($timer);
 //                $stream->close();

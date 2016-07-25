@@ -11,12 +11,6 @@
     ],
     "require": {
         "react/socket-client": "^0.5.0",
-        "react/http-client": "^0.4.10"
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/Devristo/phpws"
-        }
-    ]
+        "guzzlehttp/guzzle": "^6.2"
+    }
 }
