@@ -1,7 +1,7 @@
 <?php
 return [
     'appServerEndpoint' => [
-        'host' => 'http://tcpproxyserver.loc',
+        'host' => 'http://httpbin.org/post',
         'accessToken' => ''
     ],
 ];

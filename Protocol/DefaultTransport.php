@@ -84,9 +84,13 @@
             $this->data[$key] = $value;
         }
 
-        public function getData($key)
+        public function getData($key = null)
         {
-            return $this->data[$key];
+            if ($key && isset($this->data[$key])) {
+                return $this->data[$key];
+            }
+            return $this->data;
+
         }
 
         public function respondTo(Request $request)
@@ -107,5 +111,10 @@
         public function sendString($string)
         {
             return $this->sendMessage($string);
+        }
+
+        public function sendMessage($msg)
+        {
+            $this->_socket->write($msg);
         }
     }
