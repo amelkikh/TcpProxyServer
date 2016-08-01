@@ -12,7 +12,7 @@
     $connector->create('127.0.0.1', 8001)->then(function (React\Stream\Stream $stream) use ($id, $loop) {
 
         $loop->addPeriodicTimer(1, function (React\EventLoop\Timer\Timer $timer) use ($id, $loop, $stream) {
-            $stream->write($id.'|'.time().'|'.time().'|'.time().'|'.time() . PHP_EOL);
+            $stream->write(uniqid().'|'.time().'|'.mktime() . PHP_EOL);
 //            if ($i >= 15) {
 //                $loop->cancelTimer($timer);
 //                $stream->close();

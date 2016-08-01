@@ -1,16 +1,17 @@
 {
     "name": "vendor_name/package_name",
-    "description": "tcp proxy server",
+    "description": "Php socket Server and Client for proxing data into http application",
     "minimum-stability": "dev",
     "license": "proprietary",
     "authors": [
         {
-            "name": "amelkikh",
+            "name": "Aleksandr Melkikh",
             "email": "nexus-team@yandex.ru"
         }
     ],
     "require": {
         "react/socket-client": "^0.5.0",
-        "guzzlehttp/guzzle": "^6.2"
+        "guzzlehttp/guzzle": "^6.2",
+        "zendframework/zend-log": "^2.9"
     }
 }
