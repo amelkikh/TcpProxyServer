@@ -38,14 +38,11 @@ abstract class SocketTransport extends EventEmitter implements SocketTransportIn
     public function __construct(WritableStreamInterface $socket)
     {
         $this->_socket = $socket;
-        $this->_id = uniqid("connection-");
 
         $that = $this;
 
-        $buffer = '';
-        $socket->on("data", function($data) use ($that, &$buffer){
-            $buffer .= $data;
-            $that->handleData($buffer);
+        $socket->on("data", function($data) use ($that){
+            $that->handleData($data);
         });
 
         $socket->on("close", function($data) use ($that){
@@ -61,6 +58,11 @@ abstract class SocketTransport extends EventEmitter implements SocketTransportIn
     public function getId()
     {
         return $this->_id;
+    }
+
+    public function setId($id)
+    {
+        return $this->_id = $id;
     }
 
     public function getSocket()

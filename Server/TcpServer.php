@@ -30,7 +30,7 @@
          *
          * @var \SplObjectStorage|SocketTransportInterface[]
          */
-        protected $_connections = [];
+        public $connections = [];
 
         protected $purgeUserTimeOut = null;
         protected $_context = null;
@@ -39,7 +39,6 @@
         {
             $this->loop = $loop;
             $this->_streams = new SplObjectStorage();
-            $this->_connections = new SplObjectStorage();
 
             $uri = new Uri($url);
 
@@ -86,51 +85,25 @@
                 $client = new SocketConnection($newSocket, $that->loop, $logger);
                 $sockets->attach($client);
 
-                $client->on("connect", function () use ($that, $client, $logger) {
-                    $con = $client->getTransport();
-                    $that->getConnections()->attach($con);
-
-                    var_dump(count($that->getConnections()));
-                    $that->emit("connect", array("client" => $con));
-                });
-
                 $client->on("message", function ($message) use ($that, $client, $logger) {
                     $connection = $client->getTransport();
                     $that->emit("message", array("client" => $connection, "message" => $message));
                 });
 
-                $client->on("close", function () use ($that, $client, $logger, &$sockets, $client) {
+                $client->on("close", function () use ($that, $client, &$sockets, $client) {
                     $sockets->detach($client);
                     $connection = $client->getTransport();
-
                     if($connection){
-                        $that->getConnections()->detach($connection);
                         $that->emit("disconnect", array("client" => $connection));
                     }
                 });
 
             });
-
-
-//        $serviceSocket->on('connection', function ($conn) {
-//            // Событие получения данных
-//            $conn->on('data', function ($data) use ($conn) {
-//                echo 'Service command: '.$data;
-//            });
-//
-//            // Событие закрытия сокет соединения клиента.
-//            $conn->on('close', function ($conn) {
-//                /* @var $conn \React\Socket\Connection */
-//                echo 'service connection closed' . PHP_EOL;
-//            });
-//        });
-//        // принимает служебные команды
-//        $serviceSocket->listen($this->_config['tcpServerEndpoint']['servicePort']);
         }
 
         public function getConnections()
         {
-            return $this->_connections;
+            return $this->connections;
         }
 
         public function getStreamContext()

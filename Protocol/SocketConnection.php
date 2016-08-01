@@ -40,9 +40,14 @@ class SocketConnection extends Connection
             $this->close();
             return;
         }
+
         $data = fread($stream, $this->bufferSize);
 
-        $this->onData($data);
+        if ('' === $data || false === $data) {
+            $this->close();
+        } else {
+            $this->onData($data);
+        }
     }
 
     private function onData($data)

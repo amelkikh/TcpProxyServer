@@ -8,15 +8,12 @@
     $dns = $dnsResolverFactory->createCached('8.8.8.8', $loop);
     $connector = new React\SocketClient\Connector($loop, $dns);
 
-    $id = rand(0,100);
-    $connector->create('127.0.0.1', 8001)->then(function (React\Stream\Stream $stream) use ($id, $loop) {
+    $id = 1;
+    //TODO: Указать адрес TCP сервера
+    $connector->create('127.0.0.1', 8002)->then(function (React\Stream\Stream $stream) use ($id, $loop) {
 
         $loop->addPeriodicTimer(1, function (React\EventLoop\Timer\Timer $timer) use ($id, $loop, $stream) {
-            $stream->write(uniqid().'|'.time().'|'.mktime() . PHP_EOL);
-//            if ($i >= 15) {
-//                $loop->cancelTimer($timer);
-//                $stream->close();
-//            }
+            $stream->write($id . '|' . 'remote-reset' . PHP_EOL);
         });
         $stream->on('data', function ($data) {
             echo $data . PHP_EOL;

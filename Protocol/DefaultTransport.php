@@ -44,10 +44,8 @@
 
             $that = $this;
 
-            $buffer = '';
-            $socket->on("data", function ($data) use ($that, &$buffer) {
-                $buffer .= $data;
-                $that->handleData($buffer);
+            $socket->on("data", function ($data) use ($that) {
+                $that->handleData($data);
             });
 
             $socket->on("close", function ($data) use ($that) {
@@ -57,6 +55,7 @@
             $socket->on('connect', function () use ($that) {
                 $that->emit("connect");
             });
+//            $that->emit("connect");
         }
 
         public function getIp()
