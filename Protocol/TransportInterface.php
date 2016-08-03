@@ -1,9 +1,9 @@
 <?php
-    namespace Protocol;
+namespace Protocol;
 
-    use Evenement\EventEmitterInterface;
+use Evenement\EventEmitterInterface;
 
-    interface TransportInterface extends EventEmitterInterface
-    {
-        public function sendString($string);
-    }
+interface TransportInterface extends EventEmitterInterface
+{
+    public function sendString($string);
+}

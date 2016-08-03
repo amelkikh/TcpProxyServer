@@ -1,7 +1,7 @@
 <?php
 
     require_once dirname(__DIR__) . '/vendor/autoload.php';
-
+    $config = require_once dirname(__DIR__) . '/config.php';
     $loop = React\EventLoop\Factory::create();
 
     $dnsResolverFactory = new React\Dns\Resolver\Factory();
@@ -9,8 +9,9 @@
     $connector = new React\SocketClient\Connector($loop, $dns);
 
     $id = 1;
+
     //TODO: Указать адрес TCP сервера
-    $connector->create('127.0.0.1', 8002)->then(function (React\Stream\Stream $stream) use ($id, $loop) {
+    $connector->create($config['tcpServerSettings']['tcpHost'], $config['tcpServerSettings']['servicePort'])->then(function (React\Stream\Stream $stream) use ($id, $loop) {
 
         $loop->addPeriodicTimer(1, function (React\EventLoop\Timer\Timer $timer) use ($id, $loop, $stream) {
             $stream->write($id . '|' . 'remote-reset' . PHP_EOL);

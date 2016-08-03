@@ -1,6 +1,6 @@
 <?php
 namespace Protocol;
-include_once dirname(__DIR__).'/Protocol/SocketTransportInterface.php';
+include_once dirname(__DIR__) . '/Protocol/SocketTransportInterface.php';
 use Evenement\EventEmitter;
 use React\Stream\WritableStreamInterface;
 use Zend\Log\LoggerAwareInterface;
@@ -12,16 +12,6 @@ abstract class SocketTransport extends EventEmitter implements SocketTransportIn
      * @var LoggerInterface
      */
     protected $logger;
-
-    /**
-     * @var Request
-     */
-    protected $request;
-
-    /**
-     * @var Response
-     */
-    protected $response;
 
     /**
      *
@@ -41,11 +31,11 @@ abstract class SocketTransport extends EventEmitter implements SocketTransportIn
 
         $that = $this;
 
-        $socket->on("data", function($data) use ($that){
+        $socket->on("data", function ($data) use ($that) {
             $that->handleData($data);
         });
 
-        $socket->on("close", function($data) use ($that){
+        $socket->on("close", function ($data) use ($that) {
             $that->emit("close", func_get_args());
         });
     }
@@ -70,7 +60,8 @@ abstract class SocketTransport extends EventEmitter implements SocketTransportIn
         return $this->_socket;
     }
 
-    public function setLogger(LoggerInterface $logger){
+    public function setLogger(LoggerInterface $logger)
+    {
         $this->logger = $logger;
     }
 
@@ -79,11 +70,13 @@ abstract class SocketTransport extends EventEmitter implements SocketTransportIn
         $this->_socket->write($msg);
     }
 
-    public function setData($key, $value){
+    public function setData($key, $value)
+    {
         $this->data[$key] = $value;
     }
 
-    public function getData($key){
+    public function getData($key)
+    {
         return $this->data[$key];
     }
 }

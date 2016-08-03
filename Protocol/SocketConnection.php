@@ -36,7 +36,7 @@ class SocketConnection extends Connection
 
     public function handleData($stream)
     {
-        if (!is_resource($stream)){
+        if (!is_resource($stream)) {
             $this->close();
             return;
         }
@@ -62,7 +62,7 @@ class SocketConnection extends Connection
                 $this->emit('data', [$data, $this]);
             }
         } catch (Exception $e) {
-            $this->logger->err("Error while handling incoming data. Exception message is: ".$e->getMessage());
+            $this->logger->err("Error while handling incoming data. Exception message is: " . $e->getMessage());
             $this->close();
         }
     }
@@ -77,11 +77,11 @@ class SocketConnection extends Connection
         $this->_transport = new DefaultTransport($this, $data, $this->logger);
         $myself = $this;
 
-        $this->_transport->on("connect", function() use ($myself){
+        $this->_transport->on("connect", function () use ($myself) {
             $myself->emit("connect", [$myself]);
         });
 
-        $this->_transport->on("message", function($message) use($myself){
+        $this->_transport->on("message", function ($message) use ($myself) {
             $myself->emit("message", ["message" => $message]);
         });
 

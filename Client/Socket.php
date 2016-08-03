@@ -1,8 +1,8 @@
 <?php
 namespace Client;
 
-require_once dirname(__FILE__).'/Connector.php';
-require_once dirname(__DIR__).'/Exceptions/SocketInvalidUrlScheme.php';
+require_once dirname(__FILE__) . '/Connector.php';
+require_once dirname(__DIR__) . '/Exceptions/SocketInvalidUrlScheme.php';
 
 use Evenement\EventEmitter;
 use Exceptions\SocketInvalidUrlScheme;
@@ -29,10 +29,6 @@ class Socket extends EventEmitter
      */
     protected $stream;
     protected $socket;
-
-
-    protected $request;
-    protected $response;
 
     /**
      * @var SocketTransport
@@ -65,7 +61,7 @@ class Socket extends EventEmitter
         $this->dns = $dnsResolverFactory->createCached('8.8.8.8', $loop);
     }
 
-    public function open($timeOut=null)
+    public function open($timeOut = null)
     {
         /**
          * @var $that self
@@ -79,9 +75,9 @@ class Socket extends EventEmitter
         $deferred = new Deferred();
 
         $connector->create($uri->getHost(), $uri->getPort())
-            ->then(function (\React\Stream\DuplexStreamInterface $stream) use ($that, $uri, $deferred, $timeOut){
-                if($timeOut){
-                    $timeOutTimer = $that->loop->addTimer($timeOut, function() use($deferred, $stream, $that){
+            ->then(function (\React\Stream\DuplexStreamInterface $stream) use ($that, $uri, $deferred, $timeOut) {
+                if ($timeOut) {
+                    $timeOutTimer = $that->loop->addTimer($timeOut, function () use ($deferred, $stream, $that) {
                         $stream->close();
                         $that->logger->notice("Timeout occured, closing connection");
                         $that->emit("error");
@@ -94,26 +90,14 @@ class Socket extends EventEmitter
                 $that->transport = $transport;
                 $that->stream = $stream;
 
-                $stream->on("close", function() use($that){
+                $stream->on("close", function () use ($that) {
                     $that->isClosing = false;
                     $that->state = Socket::STATE_CLOSED;
                     $that->emit('close');
                 });
 
-                // Give the chance to change request
-//                $transport->on("request", function(Request $handshake) use($that){
-//                    $that->emit("request", func_get_args());
-//                });
-//
-//                $transport->on("handshake", function(Handshake $handshake) use($that){
-//                    $that->request = $handshake->getRequest();
-//                    $that->response = $handshake->getRequest();
-//
-//                    $that->emit("handshake", [$handshake]);
-//                });
-
-                $transport->on("connect", function() use(&$state, $that, $transport, $timeOutTimer, $deferred){
-                    if($timeOutTimer)
+                $transport->on("connect", function () use (&$state, $that, $transport, $timeOutTimer, $deferred) {
+                    if ($timeOutTimer)
                         $timeOutTimer->cancel();
 
                     $deferred->resolve($transport);
@@ -127,8 +111,7 @@ class Socket extends EventEmitter
                 });
 
                 $transport->emit('connect');
-            }, function($reason) use ($that, $deferred)
-            {
+            }, function ($reason) use ($that, $deferred) {
                 $deferred->reject($reason);
                 $that->logger->err($reason);
             });
@@ -142,7 +125,7 @@ class Socket extends EventEmitter
         $this->transport->sendString($string);
     }
 
-    public function sendMessage( $msg)
+    public function sendMessage($msg)
     {
         $this->transport->sendMessage($msg);
     }
